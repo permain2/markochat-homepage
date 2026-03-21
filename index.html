@@ -1,0 +1,2734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarkoChat — AI Customer Service for Ecommerce</title>
+  <meta name="description" content="Deploy an AI agent that handles orders, subscriptions, returns, and refunds autonomously. Your entire CX team, powered by Claude.">
+  <meta name="theme-color" content="#8b5cf6">
+  <link rel="icon" type="image/png" href="images/logo-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       LUNA DESIGN SYSTEM — Exact patterns from
+       Luna Models (Navbar, LiquidMetalButton,
+       ResultsDashboard, counters, charts)
+       ═══════════════════════════════════════════ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --luna-bg: #FAFAF8;
+      --luna-bg-card: #FFFFFF;
+      --luna-bg-section: #F5F5F3;
+      --luna-bg-alt: #EDEDEB;
+      --luna-purple: #8b5cf6;
+      --luna-purple-hover: #a78bfa;
+      --luna-purple-light: #c4b5fd;
+      --luna-purple-dark: #7c3aed;
+      --luna-purple-darker: #6d28d9;
+      --luna-text: rgba(26, 26, 26, 0.55);
+      --luna-text-heading: #1a1a1a;
+      --luna-text-muted: #6b7280;
+      --luna-text-dim: #71717a;
+      --luna-border: rgba(0, 0, 0, 0.06);
+      --luna-border-light: #d1d5db;
+      --luna-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: var(--luna-text);
+      background: var(--luna-bg);
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 400;
+      letter-spacing: -0.011em;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar — Luna 4px style */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.3); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(139, 92, 246, 0.5); }
+
+    /* Container — Luna max-width */
+    .container { max-width: min(95%, 1176px); margin: 0 auto; padding: 0 24px; }
+    @media (min-width: 640px) { .container { padding: 0 32px; } }
+
+    /* ═══════════════════════
+       KEYFRAME ANIMATIONS
+       ═══════════════════════ */
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translate3d(0, 40px, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translate3d(-32px, 0, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translate3d(32px, 0, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    @keyframes scaleUp {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes blurIn {
+      from { opacity: 0; filter: blur(8px); }
+      to { opacity: 1; filter: blur(0); }
+    }
+    @keyframes rotateInUpLeft {
+      from { opacity: 0; transform: rotate3d(0, 0, 1, -5deg) translateY(20px); }
+      to { opacity: 1; transform: rotate3d(0, 0, 1, 0deg) translateY(0); }
+    }
+    @keyframes zoomOutDown {
+      from { opacity: 0; transform: scale(0.85) translateY(-40px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes flipInY {
+      0% { transform: perspective(400px) rotateY(90deg); opacity: 0; }
+      40% { transform: perspective(400px) rotateY(-10deg); }
+      70% { transform: perspective(400px) rotateY(10deg); opacity: 1; }
+      100% { transform: perspective(400px) rotateY(0deg); opacity: 1; }
+    }
+
+    /* Luna button shimmer */
+    @keyframes btnShimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Luna marquee */
+    @keyframes marqueeScroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* Luna navbar entrance */
+    @keyframes navSlideDown {
+      from { opacity: 0; transform: translateY(-100%); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Luna ripple */
+    @keyframes liquidRipple {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+    }
+
+    /* Hero background drifts — Luna exact timings */
+    @keyframes heroBgDrift1 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(5%, -3%); }
+    }
+    @keyframes heroBgDrift2 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-4%, 3%); }
+    }
+    @keyframes heroBgDrift3 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(3%, 2%); }
+    }
+    @keyframes heroBgRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Dashboard card cloudy bg */
+    @keyframes cloudDrift1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(3%, -2%) scale(1.02); }
+    }
+    @keyframes cloudDrift2 {
+      0%, 100% { transform: translate(0, 0) scale(1.01); }
+      50% { transform: translate(-2%, 3%) scale(0.99); }
+    }
+
+    /* Stat pulse after count-up */
+    @keyframes statPulse {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.08); }
+      60% { transform: scale(0.97); }
+      100% { transform: scale(1); }
+    }
+
+    /* CTA orbs */
+    @keyframes ctaOrb1 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(30px, -40px); }
+      50% { transform: translate(-20px, -60px); }
+      75% { transform: translate(-40px, -20px); }
+    }
+    @keyframes ctaOrb2 {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-30px, 30px); }
+      50% { transform: translate(40px, 50px); }
+      75% { transform: translate(20px, -30px); }
+    }
+    @keyframes ctaOrb3 {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(-20px, -40px); }
+      66% { transform: translate(30px, 20px); }
+    }
+    @keyframes ctaShadowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1); }
+      50% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 80px rgba(139, 92, 246, 0.2); }
+    }
+
+    /* Dot pulse */
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(139, 92, 246, 0); }
+    }
+
+    /* Typing */
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Dashboard accent grow */
+    @keyframes accentGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ═══════════════════════
+       SCROLL REVEAL SYSTEM
+       ═══════════════════════ */
+
+    .sr { opacity: 0; will-change: transform, opacity; }
+    .sr.visible { animation-fill-mode: both; }
+    .sr.fade-up.visible { animation: fadeInUp 0.7s var(--luna-ease) forwards; }
+    .sr.fade-left.visible { animation: fadeInLeft 0.7s var(--luna-ease) forwards; }
+    .sr.fade-right.visible { animation: fadeInRight 0.7s var(--luna-ease) forwards; }
+    .sr.scale-up.visible { animation: scaleUp 0.7s var(--luna-ease) forwards; }
+    .sr.blur-in.visible { animation: blurIn 0.6s var(--luna-ease) forwards; }
+    .sr.flip-in.visible { animation: flipInY 0.8s var(--luna-ease) forwards; }
+    .sr.rotate-in.visible { animation: rotateInUpLeft 0.8s var(--luna-ease) forwards; }
+    .sr.zoom-down.visible { animation: zoomOutDown 0.8s var(--luna-ease) forwards; }
+
+    .sr-delay-1 { animation-delay: 100ms !important; }
+    .sr-delay-2 { animation-delay: 200ms !important; }
+    .sr-delay-3 { animation-delay: 300ms !important; }
+    .sr-delay-4 { animation-delay: 400ms !important; }
+    .sr-delay-5 { animation-delay: 500ms !important; }
+    .sr-delay-6 { animation-delay: 600ms !important; }
+    .sr-delay-7 { animation-delay: 700ms !important; }
+    .sr-delay-8 { animation-delay: 800ms !important; }
+
+    /* ═══════════════════════════════════════════
+       LIQUID METAL BUTTON — Luna exact 4-layer
+       3D perspective system, copied line-for-line
+       ═══════════════════════════════════════════ */
+
+    /* Outer wrapper — inline-block for natural sizing */
+    .lm-btn-wrap { position: relative; display: inline-block; }
+
+    /* Perspective container — Luna exact 1000px */
+    .lm-perspective {
+      perspective: 1000px;
+      perspective-origin: 50% 50%;
+    }
+
+    /* 3D container — holds all 4 layers */
+    .lm-3d {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Layer 0: Invisible sizing reference — Luna exact */
+    .lm-sizer {
+      visibility: hidden;
+      padding: 16px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      white-space: nowrap;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .lm-sizer.sz-sm { padding: 10px 20px; font-size: 14px; }
+
+    /* Layer 1: Text — z-index 30, translateZ(20px) */
+    .lm-text-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      transform: translateZ(20px);
+      z-index: 30;
+      pointer-events: none;
+    }
+    .lm-text-layer span {
+      font-size: 16px;
+      color: #FFFFFF;
+      font-weight: 600;
+      text-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lm-text-layer .sz-sm span { font-size: 14px; }
+
+    /* Layer 2: Inner purple face — z-index 20, translateZ(10px) */
+    .lm-face-layer {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateZ(10px);
+      z-index: 20;
+    }
+    .lm-face-inner {
+      position: absolute;
+      top: 2px; left: 2px; right: 2px; bottom: 2px;
+      border-radius: 100px;
+      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Layer 3: Shader border — z-index 10, translateZ(0px) */
+    .lm-shader-layer {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: translateZ(0px);
+      z-index: 10;
+    }
+    .lm-shader {
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(109,40,217,0.3),
+                  0 36px 14px rgba(109,40,217,0.02),
+                  0 20px 12px rgba(109,40,217,0.08),
+                  0 9px 9px rgba(109,40,217,0.12),
+                  0 2px 5px rgba(109,40,217,0.15);
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Shader canvas — Luna globals.css exact */
+    .lm-shader canvas {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 100px !important;
+    }
+    /* Shimmer fallback when no WebGL — Luna FullWidthButton */
+    .lm-shader::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+      z-index: -1;
+    }
+    .lm-shader.has-webgl::before { display: none; }
+    /* Top edge highlight — Luna btn-shine */
+    .lm-shader::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Layer 4: Clickable overlay — z-index 40, translateZ(25px) */
+    .lm-click-layer {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      z-index: 40;
+      transform: translateZ(25px);
+      transform-style: preserve-3d;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+      border-radius: 100px;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      color: transparent;
+      font-size: 0;
+    }
+
+    /* Ripple — Luna exact lm-ripple keyframe */
+    .lm-click-layer .ripple {
+      position: absolute;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+      animation: liquidRipple 0.6s ease-out;
+    }
+
+    /* Hover/active state changes on parent */
+    .lm-btn-wrap:hover .lm-shader {
+      box-shadow: 0 0 0 1px rgba(109,40,217,0.4),
+                  0 12px 6px rgba(109,40,217,0.05),
+                  0 8px 5px rgba(109,40,217,0.1),
+                  0 4px 4px rgba(109,40,217,0.15),
+                  0 1px 2px rgba(109,40,217,0.2);
+    }
+    .lm-btn-wrap:active .lm-shader {
+      box-shadow: 0 0 0 1px rgba(109,40,217,0.5),
+                  0 1px 2px rgba(0,0,0,0.3);
+    }
+    .lm-btn-wrap:active .lm-face-inner {
+      box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4), inset 0px 1px 2px rgba(0,0,0,0.3);
+    }
+    .lm-btn-wrap:active .lm-face-layer,
+    .lm-btn-wrap:active .lm-shader-layer {
+      transform: translateZ(10px) translateY(1px) scale(0.98);
+    }
+    .lm-btn-wrap:active .lm-shader-layer {
+      transform: translateZ(0px) translateY(1px) scale(0.98);
+    }
+
+    /* Legacy flat fallback class for simple contexts */
+    .liquid-metal-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: none;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+      box-shadow: 0 0 0 1px rgba(109,40,217,0.3),
+                  0 36px 14px rgba(109,40,217,0.02),
+                  0 20px 12px rgba(109,40,217,0.08),
+                  0 9px 9px rgba(109,40,217,0.12),
+                  0 2px 5px rgba(109,40,217,0.15);
+      transition: all 0.4s var(--luna-ease);
+      overflow: hidden;
+      z-index: 1;
+    }
+    .liquid-metal-btn span,
+    .liquid-metal-btn svg { position: relative; z-index: 1; }
+
+    /* Secondary button — unchanged from Luna */
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 16px 32px; border-radius: 100px; /* Luna: pill */
+      font-family: inherit; font-size: 16px; font-weight: 600;
+      color: var(--luna-text-heading); cursor: pointer; text-decoration: none;
+      background: var(--luna-bg-card);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      transition: all 0.4s var(--luna-ease);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: var(--luna-purple-light);
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+    }
+
+    /* ═══════════════════════
+       GRADIENT TEXT
+       ═══════════════════════ */
+
+    .text-gradient {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Counter gradient — Luna exact (180deg) */
+    .counter-gradient {
+      background: linear-gradient(180deg, #7c3aed 0%, #8b5cf6 50%, #6d28d9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ═══════════════════════
+       GLASS CARD
+       ═══════════════════════ */
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--luna-border);
+      border-radius: 16px;
+    }
+
+    /* ═══════════════════════
+       SECTION HEADING
+       ═══════════════════════ */
+
+    .section-tag {
+      display: inline-block;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--luna-purple);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400; letter-spacing: -0.027em;
+      line-height: 1.2; color: var(--luna-text-heading);
+      margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 17px; line-height: 1.7;
+      color: var(--luna-text); max-width: 600px;
+    }
+
+    /* ═══════════════════════════════════════════
+       NAVBAR — Exact Luna: 90px, smart sticky,
+       transparent → frosted glass, 5px delta
+       ═══════════════════════════════════════════ */
+
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s var(--luna-ease),
+                  backdrop-filter 0.35s var(--luna-ease),
+                  border-color 0.35s var(--luna-ease),
+                  box-shadow 0.35s var(--luna-ease),
+                  transform 0.4s var(--luna-ease);
+      animation: navSlideDown 0.6s var(--luna-ease) both;
+    }
+    .navbar.scrolled {
+      background: rgba(250, 250, 248, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+    }
+    .navbar.hidden {
+      transform: translateY(-100%);
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo-img {
+      height: 32px; width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.15));
+    }
+
+    /* Nav links — Luna: 16px, 500 weight, line-height matches navbar height */
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 0;
+      align-items: center;
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(26, 26, 26, 0.6);
+      line-height: 90px;
+      padding: 0 24px;
+      transition: color 0.3s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: #1a1a1a; }
+
+    /* Nav CTA — uses liquid metal btn style */
+    .nav-cta {
+      padding: 10px 20px; border-radius: 10px; border: none;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      color: #fff; cursor: pointer; text-decoration: none;
+      background: var(--luna-purple);
+      transition: all 0.3s var(--luna-ease);
+    }
+    .nav-cta:hover { background: var(--luna-purple-dark); transform: translateY(-1px); }
+
+    /* Mobile hamburger */
+    .nav-mobile-btn {
+      display: flex; flex-direction: column; gap: 5px; padding: 8px;
+      background: none; border: none; cursor: pointer;
+    }
+    .nav-mobile-btn span {
+      width: 22px; height: 2px; background: var(--luna-text-heading);
+      border-radius: 2px; transition: all 0.3s ease;
+    }
+    @media (min-width: 768px) { .nav-mobile-btn { display: none; } }
+
+    /* Mobile menu — Luna: slide-in drawer from right */
+    .mobile-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 320px; max-width: 85vw;
+      height: 100vh;
+      background: rgba(250, 250, 248, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--luna-border);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.08);
+      z-index: 200;
+      padding: 80px 32px 32px;
+      transform: translateX(100%);
+      transition: transform 0.5s var(--luna-ease);
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer a {
+      display: block;
+      padding: 16px 0;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--luna-text-heading);
+      border-bottom: 1px solid var(--luna-border);
+      opacity: 0;
+      transform: translateX(20px);
+      transition: opacity 0.3s ease, transform 0.3s var(--luna-ease);
+    }
+    .mobile-drawer.open a {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    /* Stagger entrance — 50ms per item */
+    .mobile-drawer.open a:nth-child(1) { transition-delay: 100ms; }
+    .mobile-drawer.open a:nth-child(2) { transition-delay: 150ms; }
+    .mobile-drawer.open a:nth-child(3) { transition-delay: 200ms; }
+    .mobile-drawer.open a:nth-child(4) { transition-delay: 250ms; }
+    .mobile-drawer.open a:nth-child(5) { transition-delay: 300ms; }
+
+    .mobile-drawer-close {
+      position: absolute; top: 24px; right: 24px;
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--luna-border); background: var(--luna-bg-card);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .mobile-drawer-close:hover { border-color: var(--luna-purple-light); }
+
+    .mobile-overlay {
+      position: fixed; inset: 0; z-index: 199;
+      background: rgba(0, 0, 0, 0.3);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-overlay.open { opacity: 1; pointer-events: auto; }
+
+    /* ═══════════════════════════════════════════
+       HERO — Multi-layer animated gradient bg
+       ═══════════════════════════════════════════ */
+
+    .hero {
+      position: relative; min-height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      padding: 140px 0 80px;
+    }
+
+    /* Hero background — Luna exact: image at 20% opacity + 4 animated gradient layers */
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: #FFFFFF;
+    }
+    .hero-bg-image {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.20;
+    }
+    /* Layer 1 — slow large-scale purple wash */
+    .hero-bg-layer {
+      position: absolute; inset: 0;
+      will-change: transform;
+    }
+    .hero-bg-layer:nth-child(2) {
+      opacity: 0.40;
+      background: radial-gradient(ellipse 120% 80% at 20% 40%, rgba(139, 92, 246, 0.10) 0%, transparent 60%);
+      animation: heroBgDrift1 12s ease-in-out infinite alternate;
+    }
+    /* Layer 2 — mid-speed diagonal sweep */
+    .hero-bg-layer:nth-child(3) {
+      opacity: 0.30;
+      background: radial-gradient(ellipse 100% 60% at 75% 25%, rgba(124, 58, 237, 0.08) 0%, transparent 55%);
+      animation: heroBgDrift2 9s ease-in-out infinite alternate-reverse;
+    }
+    /* Layer 3 — fast small accent at bottom */
+    .hero-bg-layer:nth-child(4) {
+      opacity: 0.25;
+      background: radial-gradient(ellipse 60% 50% at 50% 75%, rgba(167, 139, 250, 0.06) 0%, transparent 50%);
+      animation: heroBgDrift3 7s ease-in-out infinite alternate;
+    }
+    /* Layer 4 — slow rotating conic for subtle texture */
+    .hero-bg-layer:nth-child(5) {
+      opacity: 0.20;
+      background: conic-gradient(from 0deg at 60% 50%, rgba(139, 92, 246, 0.04), transparent 25%, rgba(109, 40, 217, 0.03), transparent 50%, rgba(167, 139, 250, 0.04), transparent 75%);
+      animation: heroBgRotate 20s linear infinite;
+    }
+    /* Light overlay — Luna exact gradient to white */
+    .hero-bg-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(rgba(255, 255, 255, 0.23) 50%, rgb(255, 255, 255) 100%);
+    }
+
+    /* Liquid Metal Shader Container */
+    .hero-shader {
+      position: absolute; inset: 0; z-index: 0; opacity: 0.08;
+      pointer-events: none;
+    }
+    .hero-shader canvas { width: 100% !important; height: 100% !important; }
+
+    .hero-content {
+      position: relative; z-index: 1; text-align: center;
+      max-width: 800px; margin: 0 auto; padding: 0 24px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 100px;
+      background: rgba(139, 92, 246, 0.08);
+      font-size: 13px; font-weight: 600; color: var(--luna-purple);
+      margin-bottom: 32px;
+      animation: fadeInUp 0.7s var(--luna-ease) both;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--luna-purple);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 400; letter-spacing: -0.027em;
+      line-height: 1.1; color: var(--luna-text-heading);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.7s var(--luna-ease) 0.15s both;
+    }
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 19px); line-height: 1.7;
+      color: var(--luna-text); max-width: 560px; margin: 0 auto 40px;
+      animation: fadeInUp 0.7s var(--luna-ease) 0.3s both;
+    }
+    .hero-buttons {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      animation: fadeInUp 0.7s var(--luna-ease) 0.45s both;
+    }
+
+    /* ═══════════════════════════════════════════
+       TRUSTED BY — Infinite marquee
+       ═══════════════════════════════════════════ */
+
+    .trusted {
+      padding: 48px 0;
+      border-top: 1px solid var(--luna-border);
+      border-bottom: 1px solid var(--luna-border);
+      overflow: hidden; position: relative;
+    }
+    .trusted-label {
+      text-align: center; font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      color: rgba(26, 26, 26, 0.35); margin-bottom: 28px;
+    }
+    .trusted-track {
+      display: flex; gap: 64px; align-items: center;
+      animation: marqueeScroll 35s linear infinite;
+      width: max-content;
+    }
+    .trusted-logo {
+      font-size: 18px; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--luna-text-heading); opacity: 0.3;
+      white-space: nowrap; flex-shrink: 0;
+      transition: opacity 0.4s ease;
+    }
+    .trusted-logo:hover { opacity: 0.6; }
+    .trusted::before, .trusted::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 120px;
+      z-index: 2; pointer-events: none;
+    }
+    .trusted::before { left: 0; background: linear-gradient(to right, var(--luna-bg), transparent); }
+    .trusted::after { right: 0; background: linear-gradient(to left, var(--luna-bg), transparent); }
+
+    /* ═══════════════════════════════════════════
+       FEATURES — Glass cards
+       ═══════════════════════════════════════════ */
+
+    .features { padding: 100px 0; }
+    .features-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 20px; margin-top: 56px;
+    }
+    @media (min-width: 768px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .features-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .feature-card {
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 16px; padding: 32px;
+      transition: all 0.7s var(--luna-ease);
+      position: relative;
+    }
+    .feature-card:hover {
+      transform: translate3d(0, -4px, 0);
+      border-color: rgba(139, 92, 246, 0.25);
+      box-shadow: 0 8px 40px rgba(139, 92, 246, 0.08);
+    }
+    .feature-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; transition: transform 0.4s var(--luna-ease);
+      overflow: hidden;
+    }
+    .feature-icon img {
+      width: 100%; height: 100%; object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(139, 92, 246, 0.15));
+    }
+    .feature-card:hover .feature-icon { transform: scale(1.1); }
+    .feature-card h3 {
+      font-size: 18px; font-weight: 500; color: var(--luna-text-heading);
+      margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+    .feature-card p {
+      font-size: 14px; line-height: 1.7; color: var(--luna-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       CHAT DEMO
+       ═══════════════════════════════════════════ */
+
+    .chat-demo {
+      padding: 100px 0;
+      background: var(--luna-bg-section);
+    }
+    .chat-demo-layout {
+      display: grid; grid-template-columns: 1fr;
+      gap: 48px; align-items: center;
+    }
+    @media (min-width: 768px) { .chat-demo-layout { grid-template-columns: 1fr 1fr; gap: 64px; } }
+
+    .chat-window {
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0,0,0,0.03);
+    }
+    /* Live chat header — realistic with agent photo + status */
+    .chat-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px;
+      background: linear-gradient(180deg, var(--luna-purple) 0%, var(--luna-purple-dark) 100%);
+      color: #fff;
+    }
+    .chat-agent-photo {
+      width: 40px; height: 40px; border-radius: 50%;
+      object-fit: cover; border: 2px solid rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+    .chat-agent-info { flex: 1; }
+    .chat-agent-name { font-size: 15px; font-weight: 600; }
+    .chat-agent-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; opacity: 0.85;
+    }
+    .chat-status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #34d399;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    .chat-minimize {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .chat-messages {
+      padding: 20px 18px; display: flex; flex-direction: column; gap: 14px;
+      min-height: 340px; background: #fafafa;
+    }
+    .chat-time-divider {
+      text-align: center; font-size: 11px; color: var(--luna-text-muted);
+      padding: 4px 0; font-weight: 500;
+    }
+    .msg { display: flex; gap: 10px; max-width: 82%; opacity: 0; transform: translateY(12px); transition: all 0.5s var(--luna-ease); }
+    .msg.visible { opacity: 1; transform: translateY(0); }
+    .msg.customer { align-self: flex-end; flex-direction: row-reverse; }
+    .msg-avatar {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      object-fit: cover;
+    }
+    .msg-avatar-letter {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      background: linear-gradient(135deg, var(--luna-purple), var(--luna-purple-dark));
+    }
+    .msg-body { display: flex; flex-direction: column; gap: 4px; }
+    .msg-sender { font-size: 12px; font-weight: 600; color: var(--luna-text-muted); }
+    .msg.customer .msg-sender { text-align: right; }
+    .msg-bubble {
+      padding: 12px 16px; border-radius: 16px;
+      font-size: 14px; line-height: 1.6;
+    }
+    .msg.ai .msg-bubble {
+      background: #fff;
+      border: 1px solid var(--luna-border);
+      color: var(--luna-text-heading);
+      border-bottom-left-radius: 4px;
+    }
+    .msg.customer .msg-bubble {
+      background: var(--luna-purple);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-action {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 6px; padding: 6px 12px; border-radius: 8px;
+      background: rgba(139, 92, 246, 0.08);
+      font-size: 12px; font-weight: 600; color: var(--luna-purple);
+    }
+    .msg-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex; gap: 10px; max-width: 82%;
+      opacity: 0; transform: translateY(12px);
+      transition: all 0.4s var(--luna-ease);
+    }
+    .typing-indicator.visible { opacity: 1; transform: translateY(0); }
+    .typing-dots {
+      display: flex; gap: 4px; align-items: center;
+      padding: 14px 18px; border-radius: 16px;
+      background: #fff; border: 1px solid var(--luna-border);
+      border-bottom-left-radius: 4px;
+    }
+    .typing-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(139, 92, 246, 0.4);
+      animation: typingBounce 1.4s ease-in-out infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    /* Chat input bar */
+    .chat-input-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      border-top: 1px solid var(--luna-border);
+      background: #fff;
+    }
+    .chat-input-field {
+      flex: 1; padding: 10px 14px; border-radius: 10px;
+      border: 1px solid var(--luna-border); background: #fafafa;
+      font-size: 13px; font-family: inherit; color: var(--luna-text);
+      outline: none;
+    }
+    .chat-send-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--luna-purple); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; transition: background 0.2s;
+    }
+    .chat-send-btn:hover { background: var(--luna-purple-dark); }
+
+    /* ═══════════════════════════════════════════
+       RESULTS DASHBOARD — Exact Luna pattern
+       4-card 2x2 grid, metallic accent bars,
+       animated counters, bar chart, progress bars
+       ═══════════════════════════════════════════ */
+
+    .dashboard { padding: 100px 0; }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 56px;
+    }
+    @media (min-width: 768px) {
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .dash-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      border-radius: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      transition: all 0.5s var(--luna-ease);
+    }
+    .dash-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.08);
+    }
+
+    /* 2px metallic accent bar at top — exact Luna gradient */
+    .dash-card-accent {
+      height: 2px;
+      background: linear-gradient(90deg, #a78bfa 0%, #c4b5fd 30%, #e9e0ff 50%, #c4b5fd 70%, #8b5cf6 100%);
+      transform-origin: left;
+      transform: scaleX(0);
+    }
+    .dash-card.visible .dash-card-accent {
+      animation: accentGrow 1.2s var(--luna-ease) 0.3s forwards;
+    }
+
+    /* Cloudy gradient background */
+    .dash-card-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .dash-card-bg::before {
+      content: '';
+      position: absolute;
+      width: 200%; height: 200%;
+      top: -50%; left: -50%;
+      background: radial-gradient(ellipse at 30% 40%, rgba(167, 139, 250, 0.06) 0%, transparent 50%);
+      animation: cloudDrift1 15s ease-in-out infinite;
+    }
+    .dash-card-bg::after {
+      content: '';
+      position: absolute;
+      width: 200%; height: 200%;
+      top: -50%; left: -50%;
+      background: radial-gradient(ellipse at 70% 60%, rgba(196, 181, 253, 0.04) 0%, transparent 50%);
+      animation: cloudDrift2 18s ease-in-out infinite;
+    }
+
+    .dash-card-inner {
+      position: relative;
+      z-index: 1;
+      padding: 28px;
+    }
+    .dash-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--luna-text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* ── Card 1: Key Metrics — 2x2 bordered grid ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .metric-cell {
+      padding: 16px 12px;
+      text-align: center;
+    }
+    /* Borders between cells */
+    .metric-cell:nth-child(1) { border-right: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .metric-cell:nth-child(2) { border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .metric-cell:nth-child(3) { border-right: 1px solid rgba(0,0,0,0.06); }
+
+    .metric-value {
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .metric-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--luna-text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Card 2: Tool Coverage — Progress bars ── */
+    .progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .progress-item-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--luna-text-heading);
+      margin-bottom: 6px;
+    }
+    .progress-item-value {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--luna-text-muted);
+    }
+    .progress-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1s var(--luna-ease);
+    }
+
+    /* ── Card 3: Recent Actions — Scrollable list ── */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-height: 220px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(139, 92, 246, 0.2) transparent;
+    }
+    .activity-list::-webkit-scrollbar { width: 4px; }
+    .activity-list::-webkit-scrollbar-track { background: transparent; }
+    .activity-list::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 2px; }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.4);
+      flex-shrink: 0;
+    }
+    .activity-text {
+      font-size: 13px;
+      color: var(--luna-text-heading);
+      flex: 1;
+    }
+    .activity-time {
+      font-size: 11px;
+      color: var(--luna-text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── Card 4: Growth Chart — Animated bar chart ── */
+    .chart-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      height: 160px;
+      padding-top: 8px;
+    }
+    .chart-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .chart-bar-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      align-items: flex-end;
+    }
+    .chart-bar {
+      width: 70%;
+      max-width: 40px;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(180deg, #8b5cf6 0%, #a78bfa 100%);
+      transform-origin: bottom;
+      transform: scaleY(0);
+      transition: transform 0.8s var(--luna-ease);
+    }
+    .chart-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--luna-text-muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+    .chart-y-axis {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      padding-right: 8px;
+      width: 36px;
+      flex-shrink: 0;
+    }
+    .chart-y-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--luna-text-muted);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ═══════════════════════════════════════════
+       PLATFORM — Services overview
+       ═══════════════════════════════════════════ */
+
+    .platform {
+      padding: 100px 0;
+      background: var(--luna-bg-section);
+    }
+    .platform-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 20px; margin-top: 56px;
+    }
+    @media (min-width: 768px) { .platform-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .platform-card {
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 20px; padding: 36px;
+      transition: all 0.7s var(--luna-ease);
+      position: relative; overflow: hidden;
+    }
+    .platform-card:hover {
+      transform: translate3d(0, -6px, 0);
+      border-color: rgba(139, 92, 246, 0.2);
+      box-shadow: 0 12px 48px rgba(139, 92, 246, 0.08);
+    }
+    .platform-card-icon {
+      width: 64px; height: 64px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+      overflow: hidden;
+      transition: transform 0.4s var(--luna-ease);
+    }
+    .platform-card-icon img {
+      width: 100%; height: 100%; object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.2));
+    }
+    .platform-card:hover .platform-card-icon {
+      transform: scale(1.08);
+    }
+    .platform-card h3 {
+      font-size: 20px; font-weight: 500; color: var(--luna-text-heading);
+      margin-bottom: 12px; letter-spacing: -0.02em;
+    }
+    .platform-card p {
+      font-size: 15px; line-height: 1.7; color: var(--luna-text);
+    }
+    .platform-card-tag {
+      display: inline-block; margin-top: 16px;
+      padding: 6px 12px; border-radius: 8px;
+      background: rgba(139, 92, 246, 0.06);
+      font-size: 12px; font-weight: 600; color: var(--luna-purple);
+    }
+
+    /* ═══════════════════════════════════════════
+       HOW IT WORKS — Steps
+       ═══════════════════════════════════════════ */
+
+    .how-it-works {
+      padding: 100px 0;
+      background: var(--luna-bg-section);
+    }
+    .steps-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 24px; margin-top: 56px;
+    }
+    @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .step-card {
+      text-align: center; padding: 40px 28px;
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 16px;
+      transition: all 0.7s var(--luna-ease);
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139, 92, 246, 0.2);
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.06);
+    }
+    .step-number {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--luna-purple), var(--luna-purple-dark));
+      color: #fff; font-size: 18px; font-weight: 700;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
+    }
+    .step-card h3 {
+      font-size: 18px; font-weight: 500; color: var(--luna-text-heading);
+      margin-bottom: 12px; letter-spacing: -0.02em;
+    }
+    .step-card p {
+      font-size: 14px; line-height: 1.7; color: var(--luna-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       TESTIMONIALS
+       ═══════════════════════════════════════════ */
+
+    .testimonials { padding: 100px 0; }
+    .testimonials-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 20px; margin-top: 56px;
+    }
+    @media (min-width: 768px) { .testimonials-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .testimonial-card {
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 16px; padding: 32px;
+      transition: all 0.5s var(--luna-ease);
+      display: flex; flex-direction: column;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    }
+    .testimonial-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+    .testimonial-stars svg { width: 16px; height: 16px; fill: #f59e0b; }
+    .testimonial-quote {
+      font-size: 15px; line-height: 1.7; color: var(--luna-text);
+      flex: 1; margin-bottom: 24px; font-style: italic;
+    }
+    .testimonial-divider {
+      height: 1px; margin-bottom: 20px;
+      background: linear-gradient(to right, transparent, var(--luna-border), transparent);
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--luna-purple), var(--luna-purple-light));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .testimonial-avatar-img {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; flex-shrink: 0;
+      border: 2px solid rgba(139, 92, 246, 0.15);
+    }
+    .testimonial-name { font-size: 14px; font-weight: 600; color: var(--luna-text-heading); }
+    .testimonial-role { font-size: 13px; color: var(--luna-text-muted); }
+
+    /* ═══════════════════════════════════════════
+       PRICING
+       ═══════════════════════════════════════════ */
+
+    .pricing { padding: 100px 0; }
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 24px; margin-top: 56px; max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+    @media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .pricing-card {
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      border-radius: 20px; padding: 40px;
+      transition: all 0.5s var(--luna-ease);
+      position: relative;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.06);
+    }
+    .pricing-card.featured {
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.1), 0 8px 32px rgba(139, 92, 246, 0.08);
+    }
+    .pricing-popular {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      padding: 6px 16px; border-radius: 100px;
+      background: var(--luna-purple); color: #fff;
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .pricing-name { font-size: 16px; font-weight: 600; color: var(--luna-text-heading); margin-bottom: 8px; }
+    .pricing-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+    .pricing-amount {
+      font-size: 48px; font-weight: 700; color: var(--luna-text-heading);
+      letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+    }
+    .pricing-period { font-size: 16px; color: var(--luna-text-muted); }
+    .pricing-desc { font-size: 14px; color: var(--luna-text); margin-bottom: 28px; line-height: 1.6; }
+    .pricing-features { list-style: none; margin-bottom: 32px; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 0; font-size: 14px; color: var(--luna-text-heading);
+    }
+    .pricing-check {
+      width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(139, 92, 246, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .pricing-check svg { width: 10px; height: 10px; stroke: var(--luna-purple); stroke-width: 3; fill: none; }
+
+    /* ═══════════════════════════════════════════
+       INTEGRATIONS
+       ═══════════════════════════════════════════ */
+
+    .integrations {
+      padding: 80px 0;
+      background: var(--luna-bg-section);
+    }
+    .integrations-logos {
+      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+      margin-top: 40px; align-items: center;
+    }
+    .integration-item {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 20px 24px; border-radius: 14px;
+      background: var(--luna-bg-card);
+      border: 1px solid var(--luna-border);
+      transition: all 0.4s var(--luna-ease);
+      min-width: 120px;
+    }
+    .integration-item:hover {
+      transform: translateY(-3px);
+      border-color: rgba(139, 92, 246, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    .integration-item svg { width: 32px; height: 32px; }
+    .integration-item span { font-size: 13px; font-weight: 600; color: var(--luna-text-heading); }
+
+    /* ═══════════════════════════════════════════
+       CTA — Floating orbs + glassmorphism
+       ═══════════════════════════════════════════ */
+
+    .cta { padding: 100px 0; position: relative; overflow: hidden; }
+    .cta-inner {
+      position: relative; padding: 80px 40px; border-radius: 24px;
+      text-align: center; overflow: hidden;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--luna-border);
+    }
+    .cta-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(60px); pointer-events: none; opacity: 0.5;
+    }
+    .cta-orb:nth-child(1) {
+      width: 300px; height: 300px; top: -100px; left: -80px;
+      background: rgba(139, 92, 246, 0.2);
+      animation: ctaOrb1 12s ease-in-out infinite;
+    }
+    .cta-orb:nth-child(2) {
+      width: 250px; height: 250px; bottom: -80px; right: -60px;
+      background: rgba(167, 139, 250, 0.18);
+      animation: ctaOrb2 15s ease-in-out infinite;
+    }
+    .cta-orb:nth-child(3) {
+      width: 200px; height: 200px; top: 50%; left: 60%;
+      background: rgba(196, 181, 253, 0.15);
+      animation: ctaOrb3 10s ease-in-out infinite;
+    }
+    .cta-content { position: relative; z-index: 1; }
+    .cta h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400; letter-spacing: -0.027em;
+      line-height: 1.2; color: var(--luna-text-heading);
+      margin-bottom: 16px;
+    }
+    .cta p {
+      font-size: 17px; color: var(--luna-text);
+      max-width: 500px; margin: 0 auto 36px; line-height: 1.7;
+    }
+    .cta .lm-shader { animation: ctaShadowPulse 2s ease-in-out infinite; }
+
+    /* ═══════════════════════════════════════════
+       FAQ — Accordion (grid-template-rows)
+       ═══════════════════════════════════════════ */
+
+    .faq { padding: 100px 0; background: var(--luna-bg-section); }
+    .faq-list { max-width: 720px; margin: 56px auto 0; }
+    .faq-item { border-bottom: 1px solid var(--luna-border); }
+    .faq-question {
+      width: 100%; padding: 20px 0; border: none;
+      background: none; cursor: pointer; text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: inherit; font-size: 16px; font-weight: 500;
+      color: var(--luna-text-heading);
+      transition: color 0.3s ease;
+    }
+    .faq-question:hover { color: var(--luna-purple); }
+    .faq-chevron {
+      width: 20px; height: 20px; flex-shrink: 0;
+      transition: transform 0.4s var(--luna-ease);
+      color: var(--luna-text-muted);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.5s var(--luna-ease);
+    }
+    .faq-item.open .faq-answer { grid-template-rows: 1fr; }
+    .faq-answer-inner { overflow: hidden; }
+    .faq-answer p {
+      padding: 0 0 20px; font-size: 15px;
+      line-height: 1.7; color: var(--luna-text);
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+
+    .footer {
+      padding: 64px 0 32px;
+      border-top: 1px solid var(--luna-border);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 40px; margin-bottom: 48px;
+    }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+    .footer-brand p {
+      font-size: 14px; line-height: 1.7; color: var(--luna-text);
+      margin-top: 16px; max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--luna-text-heading);
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block; padding: 5px 0; font-size: 14px;
+      color: var(--luna-text); text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .footer-col a:hover { color: var(--luna-purple); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+      padding-top: 32px; border-top: 1px solid var(--luna-border);
+      font-size: 13px; color: var(--luna-text-muted);
+    }
+    .footer-bottom a { color: var(--luna-text-muted); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--luna-purple); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR — Luna 90px Smart Sticky ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <img src="images/logo-full.png" alt="MarkoChat" class="nav-logo-img">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#pricing" class="nav-cta">Get Started</a>
+      <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile drawer — Luna slide-in from right -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close menu">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <a href="#features">Features</a>
+    <a href="#platform">Platform</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#pricing" style="display:inline-block; margin-top:20px; padding:14px 28px; background:var(--luna-purple); color:#fff; border-radius:12px; text-align:center; font-weight:600; border-bottom:none;">Start free trial</a>
+  </div>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero">
+    <!-- Luna exact: image at 20% + 4 animated gradient layers + light overlay -->
+    <div class="hero-bg">
+      <img src="images/hero-bg.jpg" alt="" class="hero-bg-image" loading="eager">
+      <div class="hero-bg-layer"></div>
+      <div class="hero-bg-layer"></div>
+      <div class="hero-bg-layer"></div>
+      <div class="hero-bg-layer"></div>
+      <div class="hero-bg-overlay"></div>
+    </div>
+    <div class="hero-shader" id="heroShader"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Powered by Claude Opus
+      </div>
+      <h1>AI customer service that <span class="text-gradient">actually works</span></h1>
+      <p class="hero-subtitle">Deploy an autonomous AI agent that handles orders, subscriptions, returns, and refunds. Your customers get instant, empathic support 24/7.</p>
+      <div class="hero-buttons">
+        <!-- Luna exact: 4-layer 3D perspective button -->
+        <div class="lm-btn-wrap">
+          <div class="lm-perspective">
+            <div class="lm-3d">
+              <div class="lm-sizer" aria-hidden="true">Start free trial <svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+              <div class="lm-text-layer"><span>Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
+              <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+              <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+              <a href="#pricing" class="lm-click-layer" aria-label="Start free trial"></a>
+            </div>
+          </div>
+        </div>
+        <div class="lm-btn-wrap">
+          <div class="lm-perspective">
+            <div class="lm-3d">
+              <div class="lm-sizer" aria-hidden="true">See it in action <svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+              <div class="lm-text-layer"><span>See it in action <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
+              <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+              <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+              <a href="#chat-demo" class="lm-click-layer" aria-label="See it in action"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TRUSTED BY ═══════════ -->
+  <section class="trusted">
+    <p class="trusted-label">Trusted by ecommerce brands</p>
+    <div class="trusted-track">
+      <span class="trusted-logo">Meo Nutrition</span>
+      <span class="trusted-logo">Stay.ai</span>
+      <span class="trusted-logo">Shopify Plus</span>
+      <span class="trusted-logo">ReturnGO</span>
+      <span class="trusted-logo">TrackingMore</span>
+      <span class="trusted-logo">Klaviyo</span>
+      <span class="trusted-logo">Meo Nutrition</span>
+      <span class="trusted-logo">Stay.ai</span>
+      <span class="trusted-logo">Shopify Plus</span>
+      <span class="trusted-logo">ReturnGO</span>
+      <span class="trusted-logo">TrackingMore</span>
+      <span class="trusted-logo">Klaviyo</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEATURES ═══════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="sr fade-up">
+        <span class="section-tag">Why MarkoChat</span>
+        <h2 class="section-title">Everything your CX team does,<br>automated</h2>
+        <p class="section-subtitle">MarkoChat connects to your Shopify store, subscription platform, and return system to handle real customer requests end-to-end.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card sr fade-up sr-delay-1">
+          <div class="feature-icon">
+            <img src="images/icons/icon-chat.png" alt="Natural conversations" loading="lazy">
+          </div>
+          <h3>Natural conversations</h3>
+          <p>Powered by Claude Opus, MarkoChat writes responses that match your brand voice. No canned replies, no robotic language.</p>
+        </div>
+
+        <div class="feature-card sr fade-up sr-delay-2">
+          <div class="feature-icon">
+            <img src="images/icons/icon-actions.png" alt="Real actions" loading="lazy">
+          </div>
+          <h3>Real actions, not suggestions</h3>
+          <p>19 connected tools let MarkoChat cancel orders, process refunds, update addresses, and manage subscriptions autonomously.</p>
+        </div>
+
+        <div class="feature-card sr fade-up sr-delay-3">
+          <div class="feature-icon">
+            <img src="images/icons/icon-shield.png" alt="Safety guardrails" loading="lazy">
+          </div>
+          <h3>Safety guardrails</h3>
+          <p>Built-in fraud detection, high-value order protection, financial safety gates, and automatic human handoff when needed.</p>
+        </div>
+
+        <div class="feature-card sr fade-up sr-delay-4">
+          <div class="feature-icon">
+            <img src="images/icons/icon-clock.png" alt="24/7 instant responses" loading="lazy">
+          </div>
+          <h3>24/7 instant responses</h3>
+          <p>No queue times. Customers get help in seconds, any time of day. Average response time drops from hours to under 30 seconds.</p>
+        </div>
+
+        <div class="feature-card sr fade-up sr-delay-5">
+          <div class="feature-icon">
+            <img src="images/icons/icon-escalation.png" alt="Smart escalation" loading="lazy">
+          </div>
+          <h3>Smart escalation</h3>
+          <p>MarkoChat knows when to hand off. Complex issues, angry customers, or high-value disputes get routed to your human team with full context.</p>
+        </div>
+
+        <div class="feature-card sr fade-up sr-delay-6">
+          <div class="feature-icon">
+            <img src="images/icons/icon-server.png" alt="Self-hosted & private" loading="lazy">
+          </div>
+          <h3>Self-hosted & private</h3>
+          <p>Your data stays on your server. MarkoChat runs on your own infrastructure with full control over every conversation and API key.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CHAT DEMO ═══════════ -->
+  <section class="chat-demo" id="chat-demo">
+    <div class="container">
+      <div class="chat-demo-layout">
+        <div class="sr fade-left">
+          <span class="section-tag">See it live</span>
+          <h2 class="section-title">Real conversations,<br>real actions</h2>
+          <p class="section-subtitle" style="margin-bottom:24px;">This isn't a chatbot reading from a script. MarkoChat understands context, looks up orders, and takes action in your systems.</p>
+          <div class="lm-btn-wrap" style="margin-top:8px;">
+            <div class="lm-perspective">
+              <div class="lm-3d">
+                <div class="lm-sizer" aria-hidden="true">Try it yourself <svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                <div class="lm-text-layer"><span>Try it yourself <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
+                <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+                <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+                <a href="#pricing" class="lm-click-layer" aria-label="Try it yourself"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-window sr fade-right sr-delay-2" id="chatDemo">
+          <!-- Live chat header with agent photo -->
+          <div class="chat-header">
+            <img src="images/avatars/agent-sarah.jpg" alt="Sarah" class="chat-agent-photo">
+            <div class="chat-agent-info">
+              <div class="chat-agent-name">Sarah from MarkoChat</div>
+              <div class="chat-agent-status">
+                <span class="chat-status-dot"></span>
+                Online now &middot; AI-powered
+              </div>
+            </div>
+            <button class="chat-minimize" aria-label="Minimize">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg>
+            </button>
+          </div>
+
+          <!-- Messages — animated demo -->
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-time-divider">Today, 2:34 PM</div>
+
+            <div class="msg customer" data-delay="800">
+              <img src="images/avatars/customer.jpg" alt="" class="msg-avatar">
+              <div class="msg-body">
+                <div class="msg-sender">Emma</div>
+                <div class="msg-bubble">Hi, I need to cancel my subscription and get a refund on my last order #4892</div>
+              </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+              <img src="images/avatars/agent-sarah.jpg" alt="" class="msg-avatar">
+              <div class="typing-dots">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+              </div>
+            </div>
+
+            <div class="msg ai" data-delay="2800">
+              <img src="images/avatars/agent-sarah.jpg" alt="" class="msg-avatar">
+              <div class="msg-body">
+                <div class="msg-sender">Sarah &middot; AI Agent</div>
+                <div class="msg-bubble">Hey Emma! I've pulled up your account and can see order #4892 ($47.99) shipped 3 days ago. Let me take care of both right now.</div>
+                <div class="msg-actions">
+                  <div class="msg-action">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Subscription cancelled
+                  </div>
+                  <div class="msg-action">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Refund $47.99
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="msg customer" data-delay="5200">
+              <img src="images/avatars/customer.jpg" alt="" class="msg-avatar">
+              <div class="msg-body">
+                <div class="msg-sender">Emma</div>
+                <div class="msg-bubble">Wow, that was fast! Thank you so much 🙂</div>
+              </div>
+            </div>
+
+            <div class="msg ai" data-delay="7000">
+              <img src="images/avatars/agent-sarah.jpg" alt="" class="msg-avatar">
+              <div class="msg-body">
+                <div class="msg-sender">Sarah &middot; AI Agent</div>
+                <div class="msg-bubble">You're all set! The $47.99 refund should appear in 3-5 business days. If you ever want to restart, just message us here. Take care! 💜</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input bar -->
+          <div class="chat-input-bar">
+            <input type="text" class="chat-input-field" placeholder="Type a message..." disabled>
+            <button class="chat-send-btn" disabled>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ RESULTS DASHBOARD — Exact Luna 4-card grid ═══════════ -->
+  <section class="dashboard" id="stats">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">Performance</span>
+        <h2 class="section-title">Results that speak for themselves</h2>
+        <p class="section-subtitle" style="margin:0 auto;">Real metrics from MarkoChat deployments across ecommerce brands.</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Card 1: Key Metrics — 2x2 bordered grid with gradient counters -->
+        <div class="dash-card sr fade-up sr-delay-1" id="dashMetrics">
+          <div class="dash-card-accent"></div>
+          <div class="dash-card-bg"></div>
+          <div class="dash-card-inner">
+            <div class="dash-card-title">Key Metrics</div>
+            <div class="metrics-grid">
+              <div class="metric-cell">
+                <div class="metric-value counter-gradient" data-target="94" data-suffix="%">0%</div>
+                <div class="metric-label">CSAT Score</div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-value counter-gradient" data-target="80" data-suffix="%">0%</div>
+                <div class="metric-label">Auto-resolved</div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-value counter-gradient" data-target="30" data-prefix="<" data-suffix="s">0s</div>
+                <div class="metric-label">Response Time</div>
+              </div>
+              <div class="metric-cell">
+                <div class="metric-value counter-gradient" data-target="19" data-suffix="+">0</div>
+                <div class="metric-label">Connected Tools</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Tool Coverage — Progress bars -->
+        <div class="dash-card sr fade-up sr-delay-2" id="dashCoverage">
+          <div class="dash-card-accent"></div>
+          <div class="dash-card-bg"></div>
+          <div class="dash-card-inner">
+            <div class="dash-card-title">Tool Coverage</div>
+            <div class="progress-list">
+              <div class="progress-item">
+                <div class="progress-item-label">
+                  <span>Shopify</span>
+                  <span class="progress-item-value">12 tools</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-width="85" style="background: linear-gradient(90deg, #96bf48, #7ba53e);"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-item-label">
+                  <span>Stay.ai</span>
+                  <span class="progress-item-value">13 tools</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-width="92" style="background: linear-gradient(90deg, #8b5cf6, #a78bfa);"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-item-label">
+                  <span>ReturnGO</span>
+                  <span class="progress-item-value">6 tools</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-width="65" style="background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-item-label">
+                  <span>Safety Gates</span>
+                  <span class="progress-item-value">6 layers</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-width="78" style="background: linear-gradient(90deg, #f59e0b, #fbbf24);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Recent Actions — Scrollable activity feed -->
+        <div class="dash-card sr fade-up sr-delay-3" id="dashActivity">
+          <div class="dash-card-accent"></div>
+          <div class="dash-card-bg"></div>
+          <div class="dash-card-inner">
+            <div class="dash-card-title">Recent Actions</div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Subscription cancelled for Sarah M.</span>
+                <span class="activity-time">2m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Refund $47.99 processed — Order #4892</span>
+                <span class="activity-time">2m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Return label generated — RMA-28491</span>
+                <span class="activity-time">8m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Address updated for James K.</span>
+                <span class="activity-time">12m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Subscription paused — 30 day hold</span>
+                <span class="activity-time">15m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">High-value order flagged for review</span>
+                <span class="activity-time">18m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">Product swap: Vanilla → Chocolate</span>
+                <span class="activity-time">22m ago</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <span class="activity-text">WISMO resolved — tracking shared</span>
+                <span class="activity-time">25m ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Growth Chart — Animated bar chart -->
+        <div class="dash-card sr fade-up sr-delay-4" id="dashChart">
+          <div class="dash-card-accent"></div>
+          <div class="dash-card-bg"></div>
+          <div class="dash-card-inner">
+            <div class="dash-card-title">Resolution Rate</div>
+            <div style="display:flex; gap:0;">
+              <div class="chart-y-axis">
+                <span class="chart-y-label">100%</span>
+                <span class="chart-y-label">75%</span>
+                <span class="chart-y-label">50%</span>
+                <span class="chart-y-label">25%</span>
+                <span class="chart-y-label">0%</span>
+              </div>
+              <div class="chart-container" style="flex:1;">
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="35"></div></div>
+                  <div class="chart-label">Month 1</div>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="52"></div></div>
+                  <div class="chart-label">Month 2</div>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="65"></div></div>
+                  <div class="chart-label">Month 3</div>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="74"></div></div>
+                  <div class="chart-label">Month 4</div>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="82"></div></div>
+                  <div class="chart-label">Month 5</div>
+                </div>
+                <div class="chart-col">
+                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="94"></div></div>
+                  <div class="chart-label">Month 6</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PLATFORM ═══════════ -->
+  <section class="platform" id="platform">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">The platform</span>
+        <h2 class="section-title">Built for subscription ecommerce</h2>
+        <p class="section-subtitle" style="margin:0 auto;">Deep integrations with the tools you already use, wired into one intelligent agent.</p>
+      </div>
+
+      <div class="platform-grid">
+        <div class="platform-card sr fade-up sr-delay-1">
+          <div class="platform-card-icon">
+            <img src="images/icons/icon-shopify.png" alt="Shopify" loading="lazy">
+          </div>
+          <h3>Shopify orders & customers</h3>
+          <p>Look up orders, search customers, view transactions, process refunds, cancel orders, update shipping addresses, create reshipments, and manage discounts.</p>
+          <span class="platform-card-tag">12 tools connected</span>
+        </div>
+
+        <div class="platform-card sr fade-up sr-delay-2">
+          <div class="platform-card-icon">
+            <img src="images/icons/icon-subscription.png" alt="Subscriptions" loading="lazy">
+          </div>
+          <h3>Stay.ai subscriptions</h3>
+          <p>Cancel, pause, skip, swap products, change frequency, update billing, add discounts, reactivate, and generate customer portal links.</p>
+          <span class="platform-card-tag">13 tools connected</span>
+        </div>
+
+        <div class="platform-card sr fade-up sr-delay-3">
+          <div class="platform-card-icon">
+            <img src="images/icons/icon-returns.png" alt="Returns" loading="lazy">
+          </div>
+          <h3>ReturnGO returns</h3>
+          <p>Check return eligibility, create returns, generate shipping labels, search return history, and manage the entire returns workflow automatically.</p>
+          <span class="platform-card-tag">6 tools connected</span>
+        </div>
+
+        <div class="platform-card sr fade-up sr-delay-4">
+          <div class="platform-card-icon">
+            <img src="images/icons/icon-safety.png" alt="Safety & intelligence" loading="lazy">
+          </div>
+          <h3>Safety & intelligence</h3>
+          <p>Fraud detection, high-value order protection, financial safety gates, chargeback monitoring, quality scoring, and automated daily reviews.</p>
+          <span class="platform-card-tag">6 safety layers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ HOW IT WORKS ═══════════ -->
+  <section class="how-it-works">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">How it works</span>
+        <h2 class="section-title">Live in 24 hours, not 24 weeks</h2>
+        <p class="section-subtitle" style="margin:0 auto;">Three steps to deploy your AI customer service agent.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card sr fade-up sr-delay-1">
+          <div class="step-number">1</div>
+          <h3>Connect your tools</h3>
+          <p>Link your Shopify store, Stay.ai account, and ReturnGO. MarkoChat reads your product catalog and learns your policies.</p>
+        </div>
+        <div class="step-card sr fade-up sr-delay-2">
+          <div class="step-number">2</div>
+          <h3>Set your rules</h3>
+          <p>Define refund thresholds, escalation triggers, brand voice, and retention offers. We help you build your playbook.</p>
+        </div>
+        <div class="step-card sr fade-up sr-delay-3">
+          <div class="step-number">3</div>
+          <h3>Go live</h3>
+          <p>MarkoChat starts handling email and live chat. Monitor quality scores, review daily reports, and fine-tune as you go.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">What they say</span>
+        <h2 class="section-title">Brands that switched to MarkoChat</h2>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card sr fade-up sr-delay-1">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">"MarkoChat resolved 80% of our tickets in the first week. Our team went from drowning in emails to focusing on growth initiatives."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <img src="images/avatars/james.jpg" alt="James R." class="testimonial-avatar-img">
+            <div>
+              <div class="testimonial-name">James R.</div>
+              <div class="testimonial-role">Head of Operations, DTC Brand</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card sr fade-up sr-delay-2">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">"The quality of responses is incredible. Customers sometimes don't realize they're talking to AI. Our CSAT went up after deploying."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <img src="images/avatars/maria.jpg" alt="Maria K." class="testimonial-avatar-img">
+            <div>
+              <div class="testimonial-name">Maria K.</div>
+              <div class="testimonial-role">CX Manager, Supplement Brand</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card sr fade-up sr-delay-3">
+          <div class="testimonial-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="testimonial-quote">"We saved $4,200/month on CX staffing. MarkoChat handles subscriptions, returns, and WISMO tickets that used to eat up our team's entire day."</p>
+          <div class="testimonial-divider"></div>
+          <div class="testimonial-author">
+            <img src="images/avatars/tyler.jpg" alt="Tyler B." class="testimonial-avatar-img">
+            <div>
+              <div class="testimonial-name">Tyler B.</div>
+              <div class="testimonial-role">Founder, Health & Wellness DTC</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PRICING ═══════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">Simple pricing</span>
+        <h2 class="section-title">One plan. Everything included.</h2>
+        <p class="section-subtitle" style="margin:0 auto;">No per-ticket fees. No per-agent seats. Just your AI customer service team.</p>
+      </div>
+
+      <div class="pricing-grid" style="margin-top:56px;">
+        <div class="pricing-card sr fade-up sr-delay-1">
+          <div class="pricing-name">Starter</div>
+          <div class="pricing-price">
+            <span class="pricing-amount">$29</span>
+            <span class="pricing-period">/month</span>
+          </div>
+          <p class="pricing-desc">Perfect for brands just getting started with AI customer service.</p>
+          <ul class="pricing-features">
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Unlimited conversations</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Email + live chat</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Shopify integration</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Help center portal</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Daily quality reports</li>
+          </ul>
+          <div class="lm-btn-wrap" style="width:100%;">
+            <div class="lm-perspective">
+              <div class="lm-3d">
+                <div class="lm-sizer" aria-hidden="true" style="justify-content:center;">Get started</div>
+                <div class="lm-text-layer"><span>Get started</span></div>
+                <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+                <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+                <a href="#" class="lm-click-layer" aria-label="Get started"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-card featured sr fade-up sr-delay-2">
+          <div class="pricing-popular">Most Popular</div>
+          <div class="pricing-name">Pro</div>
+          <div class="pricing-price">
+            <span class="pricing-amount">$99</span>
+            <span class="pricing-period">/month</span>
+          </div>
+          <p class="pricing-desc">Full autonomy with all integrations and safety systems.</p>
+          <ul class="pricing-features">
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Everything in Starter</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Stay.ai subscriptions</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> ReturnGO returns</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Fraud & safety gates</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Chargeback monitoring</li>
+            <li><span class="pricing-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> Custom SOPs & brand voice</li>
+          </ul>
+          <div class="lm-btn-wrap" style="width:100%;">
+            <div class="lm-perspective">
+              <div class="lm-3d">
+                <div class="lm-sizer" aria-hidden="true" style="justify-content:center;">Start free trial</div>
+                <div class="lm-text-layer"><span>Start free trial</span></div>
+                <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+                <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+                <a href="#" class="lm-click-layer" aria-label="Start free trial"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--luna-text-muted);">+ Your own Anthropic API costs (typically $50-200/month depending on volume)</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ INTEGRATIONS ═══════════ -->
+  <section class="integrations">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">Integrations</span>
+        <h2 class="section-title">Connects to your stack</h2>
+      </div>
+      <div class="integrations-logos sr fade-up sr-delay-2">
+        <div class="integration-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#96bf48" stroke-width="1.75"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Shopify</span>
+        </div>
+        <div class="integration-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#6c5ce7" stroke-width="1.75"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>Stay.ai</span>
+        </div>
+        <div class="integration-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00b894" stroke-width="1.75"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          <span>ReturnGO</span>
+        </div>
+        <div class="integration-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e17055" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>TrackingMore</span>
+        </div>
+        <div class="integration-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4a574" stroke-width="1.75"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <span>Claude API</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ CTA ═══════════ -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-inner sr scale-up">
+        <div class="cta-orb"></div>
+        <div class="cta-orb"></div>
+        <div class="cta-orb"></div>
+        <div class="cta-content">
+          <h2>Ready to automate your<br><span class="text-gradient">customer service?</span></h2>
+          <p>Deploy MarkoChat today and let AI handle your support queue. Your team focuses on growth, your customers get instant help.</p>
+          <div class="lm-btn-wrap">
+            <div class="lm-perspective">
+              <div class="lm-3d">
+                <div class="lm-sizer" aria-hidden="true">Start free trial <svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+                <div class="lm-text-layer"><span>Start free trial <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
+                <div class="lm-face-layer"><div class="lm-face-inner"></div></div>
+                <div class="lm-shader-layer"><div class="lm-shader" data-shader="true"></div></div>
+                <a href="#pricing" class="lm-click-layer" aria-label="Start free trial"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FAQ ═══════════ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div style="text-align:center;" class="sr fade-up">
+        <span class="section-tag">FAQ</span>
+        <h2 class="section-title">Common questions</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            What AI model does MarkoChat use?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>MarkoChat uses Claude Opus by Anthropic, the most capable AI model available. You bring your own API key, giving you full control over costs and usage.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Can MarkoChat actually cancel orders and process refunds?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Yes. MarkoChat has 19 connected tools that take real actions in Shopify, Stay.ai, ReturnGO, and TrackingMore. It doesn't just suggest actions, it executes them.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What happens with complex or sensitive issues?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>MarkoChat has 6 layers of safety gates including fraud detection, financial limits, and smart escalation. High-value orders, angry customers, and edge cases automatically route to your human team with full conversation context.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Is my data private and secure?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>MarkoChat is self-hosted on your own infrastructure. Customer data never touches third-party servers except for the LLM API call itself. You own everything.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How long does setup take?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Most brands go live within 24 hours. We help you connect your Shopify store, configure your policies and brand voice, and deploy the agent. You can start with email-only and add live chat when you're ready.</p></div></div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What does it cost per ticket?
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Nothing. MarkoChat has no per-ticket fees. You pay the flat monthly rate plus your own Anthropic API costs, which typically run $50-200/month depending on conversation volume.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <img src="images/logo-full.png" alt="MarkoChat" class="nav-logo-img">
+          </a>
+          <p>AI-powered customer service for ecommerce brands. Built with Claude, deployed on your infrastructure.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#platform">Platform</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Integrations</h4>
+          <a href="#">Shopify</a>
+          <a href="#">Stay.ai</a>
+          <a href="#">ReturnGO</a>
+          <a href="#">TrackingMore</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 MarkoChat. All rights reserved.</span>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT — All Luna-exact interactions
+       ═══════════════════════════════════════════ -->
+  <script>
+    // ─── Luna Smart Sticky Navbar ───
+    // Exact: 90px, 80px threshold, 5px scroll delta, transparent→frosted
+    (function() {
+      const nav = document.getElementById('navbar');
+      let lastScrollY = 0;
+      let ticking = false;
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY < 80) {
+              // At top — transparent, always visible
+              nav.classList.remove('scrolled', 'hidden');
+            } else {
+              // Past threshold — frosted glass
+              nav.classList.add('scrolled');
+
+              if (currentScrollY < lastScrollY) {
+                // Scrolling UP — show navbar
+                nav.classList.remove('hidden');
+              } else if (currentScrollY > lastScrollY + 5) {
+                // Scrolling DOWN (5px delta threshold) — hide navbar
+                nav.classList.add('hidden');
+              }
+            }
+
+            lastScrollY = currentScrollY;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      // Mobile drawer — Luna slide-in from right
+      const btn = document.getElementById('mobileMenuBtn');
+      const drawer = document.getElementById('mobileDrawer');
+      const overlay = document.getElementById('mobileOverlay');
+      const closeBtn = document.getElementById('mobileDrawerClose');
+
+      function openDrawer() {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Lock scroll
+      }
+      function closeDrawer() {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', openDrawer);
+      closeBtn.addEventListener('click', closeDrawer);
+      overlay.addEventListener('click', closeDrawer);
+      drawer.querySelectorAll('a').forEach(a =>
+        a.addEventListener('click', closeDrawer)
+      );
+      // Escape key close
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+      });
+    })();
+
+    // ─── Scroll Reveal (IntersectionObserver) ───
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.sr').forEach(el => observer.observe(el));
+    })();
+
+    // ─── Dashboard: Animated Counters (easeOutExpo, 2400ms — exact Luna) ───
+    (function() {
+      const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+      const DURATION = 2400; // Luna exact
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const card = entry.target;
+          card.classList.add('visible');
+
+          // Animate counters in this card
+          card.querySelectorAll('.metric-value[data-target]').forEach((el, i) => {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const prefix = el.dataset.prefix || '';
+            const delay = i * 100; // Stagger 100ms per counter
+
+            setTimeout(() => {
+              const start = performance.now();
+              function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / DURATION, 1);
+                const eased = easeOutExpo(progress);
+                const current = Math.round(eased * target);
+                el.textContent = prefix + current + suffix;
+                if (progress < 1) {
+                  requestAnimationFrame(tick);
+                } else {
+                  el.textContent = prefix + target + suffix;
+                  el.style.animation = 'statPulse 0.5s var(--luna-ease)';
+                }
+              }
+              requestAnimationFrame(tick);
+            }, delay);
+          });
+
+          observer.unobserve(card);
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.dash-card').forEach(el => observer.observe(el));
+    })();
+
+    // ─── Dashboard: Progress Bars (staggered width animation — Luna pattern) ───
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.querySelectorAll('.progress-fill').forEach((bar, i) => {
+            const width = bar.dataset.width;
+            // Staggered: 0.4s base + 0.1s per bar (Luna exact)
+            setTimeout(() => {
+              bar.style.transform = `scaleX(${width / 100})`;
+            }, 400 + i * 100);
+          });
+
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.15 });
+
+      const coverageCard = document.getElementById('dashCoverage');
+      if (coverageCard) observer.observe(coverageCard);
+    })();
+
+    // ─── Dashboard: Bar Chart (staggered height — Luna exact) ───
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.querySelectorAll('.chart-bar').forEach((bar, i) => {
+            const height = bar.dataset.height;
+            // Staggered: 0.5s base + 0.08s per bar (Luna exact)
+            setTimeout(() => {
+              bar.style.transform = `scaleY(${height / 100})`;
+            }, 500 + i * 80);
+          });
+
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.15 });
+
+      const chartCard = document.getElementById('dashChart');
+      if (chartCard) observer.observe(chartCard);
+    })();
+
+    // ─── FAQ Accordion ───
+    (function() {
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          const wasOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+          if (!wasOpen) item.classList.add('open');
+        });
+      });
+    })();
+
+    // ─── Chat Demo Animation — Messages appear one by one with typing ───
+    (function() {
+      const chatDemo = document.getElementById('chatDemo');
+      if (!chatDemo) return;
+
+      const messages = chatDemo.querySelectorAll('.msg[data-delay]');
+      const typing = document.getElementById('typingIndicator');
+      let hasPlayed = false;
+
+      function runDemo() {
+        if (hasPlayed) return;
+        hasPlayed = true;
+
+        messages.forEach((msg, index) => {
+          const delay = parseInt(msg.dataset.delay);
+
+          // Show typing indicator before AI messages
+          if (msg.classList.contains('ai') && typing) {
+            const typingStart = delay - 1500;
+            setTimeout(() => {
+              typing.classList.add('visible');
+            }, Math.max(typingStart, 0));
+            setTimeout(() => {
+              typing.classList.remove('visible');
+            }, delay - 200);
+          }
+
+          setTimeout(() => {
+            msg.classList.add('visible');
+          }, delay);
+        });
+
+        // Loop: reset after all messages shown + pause, then replay
+        const lastDelay = parseInt(messages[messages.length - 1].dataset.delay);
+        setTimeout(() => {
+          messages.forEach(msg => msg.classList.remove('visible'));
+          hasPlayed = false;
+          // Restart after a pause
+          setTimeout(runDemo, 1500);
+        }, lastDelay + 5000);
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) runDemo();
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(chatDemo);
+    })();
+
+    // ─── Liquid Metal Buttons — Luna exact 4-layer 3D system ───
+    (async function() {
+      try {
+        const { ShaderMount, liquidMetalFragmentShader } = await import('https://esm.sh/@paper-design/shaders@0.0.20');
+
+        // Luna exact: shader config (stable ref)
+        const shaderConfig = {
+          u_repetition: 4,
+          u_softness: 0.5,
+          u_shiftRed: 0.35,
+          u_shiftBlue: 0.45,
+          u_distortion: 0,
+          u_contour: 0,
+          u_angle: 45,
+          u_scale: 8,
+          u_shape: 1,
+          u_offsetX: 0.1,
+          u_offsetY: -0.1,
+        };
+
+        // Luna exact: use ResizeObserver to init shader when element has dimensions
+        function initShaderOnElement(shaderEl) {
+          if (shaderEl.classList.contains('has-webgl')) return;
+          const rect = shaderEl.getBoundingClientRect();
+          if (rect.width < 1 || rect.height < 1) return false;
+
+          const shaderInstance = new ShaderMount(shaderEl, liquidMetalFragmentShader, shaderConfig, undefined, 0.6);
+          shaderEl.classList.add('has-webgl');
+
+          // Luna exact: hover → speed 1, leave → 0.6, click → 2.4 for 300ms
+          const wrap = shaderEl.closest('.lm-btn-wrap');
+          if (wrap) {
+            wrap.addEventListener('mouseenter', () => {
+              if (shaderInstance?.setSpeed) shaderInstance.setSpeed(1);
+              else if (shaderInstance) shaderInstance.speed = 1;
+            });
+            wrap.addEventListener('mouseleave', () => {
+              if (shaderInstance?.setSpeed) shaderInstance.setSpeed(0.6);
+              else if (shaderInstance) shaderInstance.speed = 0.6;
+            });
+
+            // Luna exact: click handler with ripple + speed burst
+            const clickLayer = wrap.querySelector('.lm-click-layer');
+            if (clickLayer) {
+              clickLayer.addEventListener('click', (e) => {
+                if (shaderInstance?.setSpeed) {
+                  shaderInstance.setSpeed(2.4);
+                  setTimeout(() => shaderInstance.setSpeed(0.6), 300);
+                } else if (shaderInstance) {
+                  shaderInstance.speed = 2.4;
+                  setTimeout(() => { shaderInstance.speed = 0.6; }, 300);
+                }
+                const cRect = clickLayer.getBoundingClientRect();
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.left = (e.clientX - cRect.left) + 'px';
+                ripple.style.top = (e.clientY - cRect.top) + 'px';
+                clickLayer.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+              });
+            }
+          }
+          return true;
+        }
+
+        // Luna exact: ResizeObserver + rAF fallback for init timing
+        document.querySelectorAll('.lm-shader[data-shader]').forEach(shaderEl => {
+          if (initShaderOnElement(shaderEl)) return;
+          // Element has zero dimensions — watch with ResizeObserver
+          const ro = new ResizeObserver((entries) => {
+            const entry = entries[0];
+            if (!entry) return;
+            const { inlineSize, blockSize } = entry.borderBoxSize[0];
+            if (inlineSize > 0 && blockSize > 0 && !shaderEl.classList.contains('has-webgl')) {
+              initShaderOnElement(shaderEl);
+              ro.disconnect();
+            }
+          });
+          ro.observe(shaderEl);
+          // Also try on next frame as fallback
+          requestAnimationFrame(() => {
+            if (!shaderEl.classList.contains('has-webgl')) initShaderOnElement(shaderEl);
+          });
+        });
+      } catch (e) {
+        // Graceful fallback — gradient + shimmer still renders
+      }
+    })();
+
+    // ─── Hero Liquid Metal Shader (background enhancement) ───
+    (async function() {
+      try {
+        const container = document.getElementById('heroShader');
+        const { ShaderMount, liquidMetalFragmentShader } = await import('https://esm.sh/@paper-design/shaders@0.0.20');
+        new ShaderMount(container, liquidMetalFragmentShader, {
+          u_repetition: 3,
+          u_softness: 0.7,
+          u_shiftRed: 0.15,
+          u_shiftBlue: 0.12,
+          u_distortion: 0,
+          u_contour: 0,
+          u_angle: 30,
+          u_scale: 6,
+          u_shape: 1,
+          u_offsetX: 0.05,
+          u_offsetY: -0.05,
+        }, undefined, 0.3);
+      } catch (e) {
+        // Graceful degradation
+      }
+    })();
+
+    // ─── Smooth scroll for anchor links ───
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
