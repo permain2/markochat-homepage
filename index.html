@@ -283,9 +283,9 @@
     }
     .lm-text-layer span {
       font-size: 16px;
-      color: #FFFFFF;
-      font-weight: 600;
-      text-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+      color: #666666;
+      font-weight: 400;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
       white-space: nowrap;
       display: inline-flex;
@@ -307,7 +307,7 @@
       position: absolute;
       top: 2px; left: 2px; right: 2px; bottom: 2px;
       border-radius: 100px;
-      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+      background: linear-gradient(180deg, #202020 0%, #000000 100%);
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -325,11 +325,11 @@
       inset: 0;
       border-radius: 100px;
       overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(109,40,217,0.3),
-                  0 36px 14px rgba(109,40,217,0.02),
-                  0 20px 12px rgba(109,40,217,0.08),
-                  0 9px 9px rgba(109,40,217,0.12),
-                  0 2px 5px rgba(109,40,217,0.15);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3),
+                  0 36px 14px rgba(0, 0, 0, 0.02),
+                  0 20px 12px rgba(0, 0, 0, 0.08),
+                  0 9px 9px rgba(0, 0, 0, 0.12),
+                  0 2px 5px rgba(0, 0, 0, 0.15);
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     }
     /* Shader canvas — Luna globals.css exact */
@@ -341,13 +341,13 @@
       height: 100% !important;
       border-radius: 100px !important;
     }
-    /* Shimmer fallback when no WebGL — Luna FullWidthButton */
+    /* Shimmer fallback when no WebGL */
     .lm-shader::before {
       content: '';
       position: absolute;
       inset: 0;
       border-radius: 100px;
-      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+      background: linear-gradient(135deg, #c0c0c0 0%, #808080 25%, #d0d0d0 50%, #909090 75%, #b0b0b0 100%);
       z-index: -1;
     }
     .lm-shader.has-webgl::before { display: none; }
@@ -397,15 +397,15 @@
 
     /* Hover/active state changes on parent */
     .lm-btn-wrap:hover .lm-shader {
-      box-shadow: 0 0 0 1px rgba(109,40,217,0.4),
-                  0 12px 6px rgba(109,40,217,0.05),
-                  0 8px 5px rgba(109,40,217,0.1),
-                  0 4px 4px rgba(109,40,217,0.15),
-                  0 1px 2px rgba(109,40,217,0.2);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4),
+                  0 12px 6px rgba(0, 0, 0, 0.05),
+                  0 8px 5px rgba(0, 0, 0, 0.1),
+                  0 4px 4px rgba(0, 0, 0, 0.15),
+                  0 1px 2px rgba(0, 0, 0, 0.2);
     }
     .lm-btn-wrap:active .lm-shader {
-      box-shadow: 0 0 0 1px rgba(109,40,217,0.5),
-                  0 1px 2px rgba(0,0,0,0.3);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5),
+                  0 1px 2px rgba(0, 0, 0, 0.3);
     }
     .lm-btn-wrap:active .lm-face-inner {
       box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4), inset 0px 1px 2px rgba(0,0,0,0.3);
@@ -431,15 +431,15 @@
       font-family: inherit;
       font-size: 16px;
       font-weight: 600;
-      color: #fff;
+      color: #666666;
       cursor: pointer;
       text-decoration: none;
-      background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
-      box-shadow: 0 0 0 1px rgba(109,40,217,0.3),
-                  0 36px 14px rgba(109,40,217,0.02),
-                  0 20px 12px rgba(109,40,217,0.08),
-                  0 9px 9px rgba(109,40,217,0.12),
-                  0 2px 5px rgba(109,40,217,0.15);
+      background: linear-gradient(180deg, #202020 0%, #000000 100%);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3),
+                  0 36px 14px rgba(0, 0, 0, 0.02),
+                  0 20px 12px rgba(0, 0, 0, 0.08),
+                  0 9px 9px rgba(0, 0, 0, 0.12),
+                  0 2px 5px rgba(0, 0, 0, 0.15);
       transition: all 0.4s var(--luna-ease);
       overflow: hidden;
       z-index: 1;
@@ -2625,8 +2625,8 @@
         const shaderConfig = {
           u_repetition: 4,
           u_softness: 0.5,
-          u_shiftRed: 0.35,
-          u_shiftBlue: 0.45,
+          u_shiftRed: 0.3,
+          u_shiftBlue: 0.3,
           u_distortion: 0,
           u_contour: 0,
           u_angle: 45,
