@@ -594,6 +594,13 @@
       transition: all 0.3s var(--luna-ease);
     }
     .nav-cta:hover { background: var(--luna-purple-dark); transform: translateY(-1px); }
+    .nav-login {
+      padding: 10px 20px; border-radius: 10px; border: 1px solid var(--luna-border-light);
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      color: var(--luna-text-heading); cursor: pointer; text-decoration: none;
+      background: transparent; transition: all 0.3s var(--luna-ease); margin-right: 8px;
+    }
+    .nav-login:hover { background: var(--luna-bg-section); transform: translateY(-1px); }
 
     /* Mobile hamburger */
     .nav-mobile-btn {
@@ -1565,6 +1572,7 @@
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
+      <a href="/app/login" class="nav-login">Login</a>
       <a href="#pricing" class="nav-cta">Get Started</a>
       <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -1582,7 +1590,8 @@
     <a href="#platform">Platform</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a href="#pricing" style="display:inline-block; margin-top:20px; padding:14px 28px; background:var(--luna-purple); color:#fff; border-radius:12px; text-align:center; font-weight:600; border-bottom:none;">Start free trial</a>
+    <a href="/app/login" style="display:inline-block; margin-top:12px; padding:14px 28px; border:1px solid var(--luna-border-light); color:var(--luna-text-heading); border-radius:12px; text-align:center; font-weight:600; border-bottom:none;">Login</a>
+    <a href="#pricing" style="display:inline-block; margin-top:8px; padding:14px 28px; background:var(--luna-purple); color:#fff; border-radius:12px; text-align:center; font-weight:600; border-bottom:none;">Start free trial</a>
   </div>
 
   <!-- ═══════════ HERO ═══════════ -->
