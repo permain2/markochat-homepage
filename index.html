@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MarkoChat — AI Customer Service for Ecommerce</title>
-  <meta name="description" content="Deploy an AI agent that handles orders, subscriptions, returns, and refunds autonomously. Your entire CX team, powered by Claude.">
+  <meta name="description" content="Deploy an AI agent that handles orders, subscriptions, returns, and refunds autonomously. Your entire CX team, powered by AI.">
   <meta name="theme-color" content="#8b5cf6">
   <link rel="icon" type="image/png" href="images/logo-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1165,60 +1165,34 @@
       white-space: nowrap;
     }
 
-    /* ── Card 4: Growth Chart — Animated bar chart ── */
-    .chart-container {
-      display: flex;
-      align-items: flex-end;
-      gap: 0;
-      height: 160px;
-      padding-top: 8px;
-    }
-    .chart-col {
+    /* ── Card 4: Growth Chart — Luna exact bar chart ── */
+    .chart-col-luna {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100%;
       justify-content: flex-end;
-    }
-    .chart-bar-wrap {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      flex: 1;
-      align-items: flex-end;
-    }
-    .chart-bar {
-      width: 70%;
-      max-width: 40px;
-      border-radius: 6px 6px 2px 2px;
-      background: linear-gradient(180deg, #8b5cf6 0%, #a78bfa 100%);
-      transform-origin: bottom;
-      transform: scaleY(0);
-      transition: transform 0.8s var(--luna-ease);
-    }
-    .chart-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--luna-text-muted);
-      margin-top: 8px;
-      text-align: center;
-    }
-    .chart-y-axis {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       height: 100%;
-      padding-right: 8px;
-      width: 36px;
-      flex-shrink: 0;
     }
-    .chart-y-label {
+    .chart-val {
+      margin-bottom: 4px;
       font-size: 10px;
       font-weight: 500;
-      color: var(--luna-text-muted);
-      text-align: right;
       font-variant-numeric: tabular-nums;
+      color: #9ca3af;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .chart-col-luna.animated .chart-val { opacity: 1; }
+    .chart-bar-luna {
+      width: 100%;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(to top, #8b5cf6, #a78bfa);
+      height: 0;
+      transition: height 0.8s var(--luna-ease);
+    }
+    .chart-col-luna.animated .chart-bar-luna {
+      height: var(--bar-h);
     }
 
     /* ═══════════════════════════════════════════
@@ -1613,7 +1587,7 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span class="hero-badge-dot"></span>
-        Powered by Claude Opus
+        Powered by your AI model of choice
       </div>
       <h1>AI customer service that <span class="text-gradient">actually works</span></h1>
       <p class="hero-subtitle">Deploy an autonomous AI agent that handles orders, subscriptions, returns, and refunds. Your customers get instant, empathic support 24/7.</p>
@@ -1676,7 +1650,7 @@
             <img src="images/icons/icon-chat.png" alt="Natural conversations" loading="lazy">
           </div>
           <h3>Natural conversations</h3>
-          <p>Powered by Claude Opus, MarkoChat writes responses that match your brand voice. No canned replies, no robotic language.</p>
+          <p>Powered by your AI model of choice, MarkoChat writes responses that match your brand voice. No canned replies, no robotic language.</p>
         </div>
 
         <div class="feature-card sr fade-up sr-delay-2">
@@ -1751,7 +1725,7 @@
               <div class="chat-agent-name">Sarah from MarkoChat</div>
               <div class="chat-agent-status">
                 <span class="chat-status-dot"></span>
-                Online now &middot; AI-powered
+                Online now
               </div>
             </div>
             <button class="chat-minimize" aria-label="Minimize">
@@ -1967,39 +1941,31 @@
           <div class="dash-card-accent"></div>
           <div class="dash-card-bg"></div>
           <div class="dash-card-inner">
-            <div class="dash-card-title">Resolution Rate</div>
-            <div style="display:flex; gap:0;">
-              <div class="chart-y-axis">
-                <span class="chart-y-label">100%</span>
-                <span class="chart-y-label">75%</span>
-                <span class="chart-y-label">50%</span>
-                <span class="chart-y-label">25%</span>
-                <span class="chart-y-label">0%</span>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div class="dash-card-title" style="margin:0;">Resolution Rate</div>
+              <span style="font-size:12px; font-weight:600; color:#10b981;">+168%</span>
+            </div>
+            <div style="display:flex; align-items:start; gap:12px; margin-top:12px;">
+              <div style="display:flex; flex-direction:column; justify-content:space-between; height:160px; padding:2px 0;">
+                <span style="font-size:10px; font-variant-numeric:tabular-nums; color:#9ca3af;">94%</span>
+                <span style="font-size:10px; font-variant-numeric:tabular-nums; color:#9ca3af;">35%</span>
               </div>
-              <div class="chart-container" style="flex:1;">
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="35"></div></div>
-                  <div class="chart-label">Month 1</div>
+              <div style="flex:1;">
+                <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:8px; height:160px;">
+                  <div class="chart-col-luna" style="--bar-h:35%;"><span class="chart-val">35%</span><div class="chart-bar-luna"></div></div>
+                  <div class="chart-col-luna" style="--bar-h:52%;"><span class="chart-val">52%</span><div class="chart-bar-luna"></div></div>
+                  <div class="chart-col-luna" style="--bar-h:65%;"><span class="chart-val">65%</span><div class="chart-bar-luna"></div></div>
+                  <div class="chart-col-luna" style="--bar-h:74%;"><span class="chart-val">74%</span><div class="chart-bar-luna"></div></div>
+                  <div class="chart-col-luna" style="--bar-h:82%;"><span class="chart-val">82%</span><div class="chart-bar-luna"></div></div>
+                  <div class="chart-col-luna" style="--bar-h:94%;"><span class="chart-val">94%</span><div class="chart-bar-luna"></div></div>
                 </div>
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="52"></div></div>
-                  <div class="chart-label">Month 2</div>
-                </div>
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="65"></div></div>
-                  <div class="chart-label">Month 3</div>
-                </div>
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="74"></div></div>
-                  <div class="chart-label">Month 4</div>
-                </div>
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="82"></div></div>
-                  <div class="chart-label">Month 5</div>
-                </div>
-                <div class="chart-col">
-                  <div class="chart-bar-wrap"><div class="chart-bar" data-height="94"></div></div>
-                  <div class="chart-label">Month 6</div>
+                <div style="display:flex; justify-content:space-between; gap:8px; margin-top:8px;">
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 1</span>
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 2</span>
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 3</span>
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 4</span>
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 5</span>
+                  <span style="flex:1; text-align:center; font-size:10px; color:#9ca3af;">Month 6</span>
                 </div>
               </div>
             </div>
@@ -2222,7 +2188,7 @@
           </div>
         </div>
       </div>
-      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--luna-text-muted);">+ Your own Anthropic API costs (typically $50-200/month depending on volume)</p>
+      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--luna-text-muted);">+ Your own AI API costs (typically $50-200/month depending on volume)</p>
     </div>
   </section>
 
@@ -2252,7 +2218,7 @@
         </div>
         <div class="integration-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="#d4a574" stroke-width="1.75"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-          <span>Claude API</span>
+          <span>AI API</span>
         </div>
       </div>
     </div>
@@ -2298,7 +2264,7 @@
             What AI model does MarkoChat use?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="faq-answer"><div class="faq-answer-inner"><p>MarkoChat uses Claude Opus by Anthropic, the most capable AI model available. You bring your own API key, giving you full control over costs and usage.</p></div></div>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>MarkoChat works with your AI model of choice — Claude, GPT, Gemini, or any OpenAI-compatible API. You bring your own API key, giving you full control over costs and usage.</p></div></div>
         </div>
 
         <div class="faq-item">
@@ -2338,7 +2304,7 @@
             What does it cost per ticket?
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
-          <div class="faq-answer"><div class="faq-answer-inner"><p>Nothing. MarkoChat has no per-ticket fees. You pay the flat monthly rate plus your own Anthropic API costs, which typically run $50-200/month depending on conversation volume.</p></div></div>
+          <div class="faq-answer"><div class="faq-answer-inner"><p>Nothing. MarkoChat has no per-ticket fees. You pay the flat monthly rate plus your own AI API costs, which typically run $50-200/month depending on conversation volume.</p></div></div>
         </div>
       </div>
     </div>
@@ -2352,7 +2318,7 @@
           <a href="#" class="nav-logo">
             <img src="images/logo-full.png" alt="MarkoChat" class="nav-logo-img">
           </a>
-          <p>AI-powered customer service for ecommerce brands. Built with Claude, deployed on your infrastructure.</p>
+          <p>AI-powered customer service for ecommerce brands. Deployed on your infrastructure.</p>
         </div>
         <div class="footer-col">
           <h4>Product</h4>
@@ -2537,12 +2503,10 @@
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
 
-          entry.target.querySelectorAll('.chart-bar').forEach((bar, i) => {
-            const height = bar.dataset.height;
-            // Staggered: 0.5s base + 0.08s per bar (Luna exact)
+          entry.target.querySelectorAll('.chart-col-luna').forEach((col, i) => {
             setTimeout(() => {
-              bar.style.transform = `scaleY(${height / 100})`;
-            }, 500 + i * 80);
+              col.classList.add('animated');
+            }, 300 + i * 120);
           });
 
           observer.unobserve(entry.target);
